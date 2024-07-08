@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Responsive Custom Clock Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #clock {
+            font-size: 15vw;
+            margin-bottom: 20px;
+        }
+        #custom-text {
+            font-size: 5vw;
+            min-height: 36px;
+            cursor: text;
+        }
+        #start-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 4vw;
+        }
+
+        @media (orientation: landscape) {
+            #clock {
+                font-size: 20vh;
+            }
+            #custom-text {
+                font-size: 5vh;
+            }
+            #start-link {
+                font-size: 4vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a id="start-link" href="javascript:startClock();">Start Clock</a>
+        <div id="clock" style="display: none;"></div>
+        <div id="custom-text" contenteditable="true" style="display: none;"></div>
+    </div>
+
+    <script>
+        function startClock() {
+            document.getElementById('start-link').style.display = 'none';
+            document.getElementById('clock').style.display = 'block';
+            document.getElementById('custom-text').style.display = 'block';
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // 监听屏幕方向变化
+        window.addEventListener("orientationchange", function() {
+            // 强制重新计算布局
+            setTimeout(function() {
+                window.dispatchEvent(new Event('resize'));
+            }, 200);
+        });
+    </script>
+</body>
+</html>
